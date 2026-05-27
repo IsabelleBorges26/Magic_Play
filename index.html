@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Magic Play 🪄</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght=400;700;900&display=swap"
+        rel="stylesheet" />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="bg">
+        <div class="ground"></div>
+    </div>
+    <div id="flash"></div>
+
+    <div class="modal-overlay" id="modal-rules">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('modal-rules')">✕</button>
+            <p class="modal-title">📜 Como Jogar</p>
+            <ul class="rules-list">
+                <li><span class="ri">🪨</span>Pedra esmaga Tesoura e Lagarto</li>
+                <li><span class="ri">📄</span>Papel cobre Pedra e refuta Spock</li>
+                <li><span class="ri">✂️</span>Tesoura corta Papel e decapita Lagarto</li>
+                <li><span class="ri">🦎</span>Lagarto come Papel e envenena Spock</li>
+                <li><span class="ri">🖖</span>Spock esmaga Pedra e vaporiza Tesoura</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-cfg">
+        <div class="modal-box" style="max-width:360px;">
+            <button class="modal-close" onclick="closeModal('modal-cfg')">✕</button>
+            <p class="modal-title">⚙️ Configurações</p>
+            <div class="cfg-row">
+                <span class="cfg-label">🎵 Volume da Música</span>
+                <input class="vol-slider" type="range" min="0" max="100" value="60" id="vol-music"
+                    oninput="setMusicVol(this.value)">
+            </div>
+            <div class="cfg-row">
+                <span class="cfg-label">🔊 Volume dos Efeitos</span>
+                <input class="vol-slider" type="range" min="0" max="100" value="80" id="vol-sfx"
+                    oninput="setSfxVol(this.value)">
+            </div>
+            <div class="cfg-row">
+                <span class="cfg-label">🔇 Mudo Geral</span>
+                <button class="mute-btn" id="mute-btn" onclick="toggleMute()">Mutar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-gameover">
+        <div class="modal-box">
+            <span class="gameover-skull">💀</span>
+            <p class="modal-title" style="color:var(--pink2);text-shadow:2px 2px 0 #b71c1c;">GAME OVER!</p>
+            <p class="gameover-msg">Você perdeu todas as suas vidas!<br>Responda a pergunta para continuar...</p>
+            <div class="question-box">
+                <span class="question-text" id="go-question"></span>
+                <div class="answer-opts" id="go-answers"></div>
+                <div class="answer-feedback" id="go-feedback"></div>
+            </div>
+            <button class="restart-btn" id="restart-btn" onclick="restartGame()">▶ Jogar Novamente!</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="lives" id="lives-bar">
+            <span class="heart" id="h1">❤️</span>
+            <span class="heart" id="h2">❤️</span>
+            <span class="heart" id="h3">❤️</span>
+        </div>
+
+        <div class="game-title">
+            PEDRA · PAPEL · TESOURA · LAGARTO · SPOCK
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;">
+            <div class="score-pill">
+                <div class="sp-col"><span class="sp-lbl">Você</span><span class="sp-num" id="player-score">0</span>
+                </div>
+                <div class="sp-col"><span class="sp-lbl">Maquina</span><span class="sp-num" id="ai-score">0</span></div>
+            </div>
+            <button class="icon-btn" id="sound-btn" onclick="toggleSound()" title="Som">🔊</button>
+            <button class="icon-btn" onclick="openModal('modal-cfg')" title="Configurações">⚙️</button>
+        </div>
+    </header>
+
+    <div class="body-row">
+        <div class="side-card">
+            <div class="side-title">✦ Como Jogar ✦</div>
+            <div class="rule-item"><span class="rule-ico">🪨</span>
+                <div class="rule-txt"><span class="rule-name">PEDRA</span><br>Esmaga lagarto e quebra tesoura<br></div>
+            </div>
+            <div class="rule-item"><span class="rule-ico">📄</span>
+                <div class="rule-txt"><span class="rule-name">PAPEL</span><br>Cobre a pedra e desmente o spoke<br></div>
+            </div>
+            <div class="rule-item"><span class="rule-ico">✂️</span>
+                <div class="rule-txt"><span class="rule-name">TESOURA</span><br>Corta papel e dacapita lagarto<br></div>
+            </div>
+            <div class="rule-item"><span class="rule-ico">🦎</span>
+                <div class="rule-txt"><span class="rule-name">LAGARTO</span><br>Envenena o spoke e come papel<br></div>
+            </div>
+            <div class="rule-item"><span class="rule-ico">🖖</span>
+                <div class="rule-txt"><span class="rule-name">SPOCK</span><br>Esmaga tesoura e destroi a pedra<br></div>
+            </div>
+        </div>
+
+        <div class="center-col">
+            <div class="arena">
+                <div class="arena-ring2"></div>
+                <div class="arena-ring"></div>
+                <div class="arena-disc">
+                    <div class="arena-cloud top">☁️</div>
+                    <div class="arena-cloud bot">☁️</div>
+                    <div class="arena-center" id="arena-center">
+                        <div class="vs-wrap">
+                            <span class="vs-deco">≪</span>
+                            <span class="vs-txt">VS</span>
+                            <span class="vs-deco">≫</span>
+                        </div>
+                        <div class="arena-status" id="arena-status">Escolha seu movimento</div>
+                    </div>
+                    <div class="arena-result" id="arena-result">
+                        <div class="choice-side">
+                            <div class="choice-bubble" id="p-bubble"></div>
+                            <span class="choice-name">Você</span>
+                        </div>
+                        <div class="clash-fx" id="clash-fx">⚡</div>
+                        <div class="choice-side">
+                            <div class="choice-bubble" id="a-bubble"></div>
+                            <span class="choice-name">Maquina</span>
+                        </div>
+                    </div>
+                    <div class="result-badge" id="result-badge">
+                        <span class="badge-word" id="badge-word"></span>
+                        <span class="badge-sub" id="badge-sub"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="choices-row">
+                <button class="choice-btn btn-rock" onclick="playMove('rock')">
+                    <div class="choice-orb"><img alt="Pedra"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBM8h0oJ-M-o9aW_XE-JmVA40LbxO0h_yeAOiceCITmVKlJVU9TRMQKyxBFhfk-zCa82FKMA46JwIci2JX75mtskKA5AvVJCXaNQVjUnzBCGG9Ur4JLwIaRAjtWyOP7xAhXG7joqasD_cmQoxAUIlLFPh7IwMe6cnNZloOah0wtfO0dekdSsmmxKtstGdIBDRZIqLaGUl-SQ1tsG7_5lIuU2Da93y-COCuyL7H6JP8pIKdH8Bfmi50QcCwoAMQ1sYxiUEuwJHLypzB" />
+                    </div>
+                    <span class="choice-lbl">Pedra</span>
+                </button>
+                <button class="choice-btn btn-paper" onclick="playMove('paper')">
+                    <div class="choice-orb"><img alt="Papel"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmiLP1GuqfYUFGqY-avC3zzdop4Fejd_f1b-BprwB9q_oJiE_5a7FwTAzhRSTzoBla26eGwB6QjSK8bUMGChOIoPd5o2csa1D_ljTwPRVvdpMpliDt7dt7QVcOn5cMUrhsxKkEVPkwjm1URkEZwsYKQCQypzuOOHy1xp7DOP1Vgui8uZZZpH_ntfSZWEa3FcHhq1G7f6lI20om-pY7gc_m355XeS6pqBzusvxgiNWkDlE3_SqFRE0AT56MqTjXkVvy8w5dF8NaANs5" />
+                    </div>
+                    <span class="choice-lbl">Papel</span>
+                </button>
+                <button class="choice-btn btn-scissors" onclick="playMove('scissors')">
+                    <div class="choice-orb"><img alt="Tesoura"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuANCAF58cTJ66vgIpjJBrVxMwdFEzeup-mFsjxdaBQtkye9-Gwio4TxJb5bLU6HIzXNnKbl91Dho8Yhr134nrjp8FFuuCoH-LP5Cy8WjBli7vZh6g__HVtve1SoLgISnYfmeVnGMnV7FvBF28XxFvNiFbi0TOoYh7YNqgcN8XIvuADEm2-NzD8zyyVCHWn8py17-7YLDfKgZvp7dXTloEzEXsjNosdIWur2PuqR2J9YEQMw6dWZkHT0gOXfIbINOR3I6-9AlCXwZa82" />
+                    </div>
+                    <span class="choice-lbl">Tesoura</span>
+                </button>
+                <button class="choice-btn btn-lizard" onclick="playMove('lizard')">
+                    <div class="choice-orb"><img alt="Lagarto"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA00KKidx77tzqc1bmfHtK_kIlCXXcDKm2k1-TLo-tkntS48xf_Wmo5zHSd8dAtCSfPoISKt4n595WuocPIF9C7RUOn8sULQsw_wWcUhrGPpYKEhQJBHefNVAYHfgsJRUJZNPgFjHPF1Nl-prf0ervrEYJF53WnxcY4_Olk1HUXcoDIl3aSXHSqp9M5X6Eqyxvt-SlRTRezO1kWjiYRyWnvYsho_1eEFI_4_PIlNu3Z9xGb7eTIvIswZffEyGkIlSui29dZixNA4NAi" />
+                    </div>
+                    <span class="choice-lbl">Lagarto</span>
+                </button>
+                <button class="choice-btn btn-spock" onclick="playMove('spock')">
+                    <div class="choice-orb"><img alt="Spock"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCIo3DGXjcwGNpInAYd6zG9850yRBnas5kzLsGOd3yFAnjMOgkxjQ5bL0C9BYywSlNQhSFtbK1lwrrWoknwXvOQI49_kWMwyniS5bpFt1YAlZJ1HF51rkaWIJTGkiiVUvp-OY9c6OKMFuIiPNptXvCx2tA7KOAGMZNZIgdY6vdoAJ-gjrMFm1j5-fe5teHy4JPDA5YJA2LVXCSvzKo6K0LlREHo_Ho-VOh9Aj-Car0oTOb1q6UdHPQjPvarNJpbBfhnp8FzVU4W_IS" />
+                    </div>
+                    <span class="choice-lbl">Spock</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="rpanel-card">
+                <div class="rpanel-title">Placar</div>
+                <div class="score-row"><span class="sr-label">Você</span><span class="sr-val" id="rs-player">0</span>
+                </div>
+                <div class="score-row"><span class="sr-label">Maquina</span><span class="sr-val" id="rs-ai">0</span></div>
+                <div class="score-row"><span class="sr-label">Empates</span><span class="sr-val" id="rs-draw">0</span>
+                </div>
+            </div>
+            <div class="rpanel-card">
+                <div class="rpanel-title">Histórico</div>
+                <div class="hist-bubbles" id="hist-bubbles"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <span>Jogo feito com ♥ em pixel por Isabelle Borges e Mirella Brolezi</span>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
