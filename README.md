@@ -4,6 +4,14 @@ Um jogo clássico e expandido de "Pedra, Papel, Tesoura, Lagarto e Spock" desenv
 
 ---
 
+## 📸 Demonstração do Projeto
+
+| Tela de Escolha | Confronto | Quiz de Recuperação |
+| :---: | :---: | :---: |
+| <img src="assets/1.png" width="700" alt="Tela de Escolha"> | <img src="assets/2.png" width="700" alt="Confronto"> | <img src="assets/3.png" width="700" alt="Quiz"> |
+
+
+---
 ## 🛠️ Tecnologias Utilizadas
 
 O projeto foi construído utilizando apenas tecnologias web nativas, sem a dependência de bibliotecas ou frameworks externos:
@@ -49,3 +57,7 @@ O projeto foi construído utilizando apenas tecnologias web nativas, sem a depen
 1. Faça o download ou clone este repositório.
 2. Abra o arquivo `index.html` diretamente em qualquer navegador moderno (Chrome, Firefox, Edge, Safari).
 3. Divirta-se! 🎮
+
+---
+
+## 🩷 Feito por: Isabelle Borges e Mirella Brolezi
