@@ -3,7 +3,13 @@
 Um jogo clássico e expandido de "Pedra, Papel, Tesoura, Lagarto e Spock" desenvolvido com estética retrô de **Pixel Art**, interface fluida e geração de áudio nativa por código.
 
 ---
+## 🌐 Jogue Agora
 
+Você pode testar e se divertir com o jogo diretamente pelo seu navegador clicando no link:
+
+👉 **[Clique aqui para acessar o jogo]([https://isabelleborges26.github.io/Magic_Play/])**
+
+---
 ## 📸 Demonstração do Projeto
 
 | Tela de Escolha | Confronto | Quiz de Recuperação |
